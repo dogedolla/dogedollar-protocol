@@ -1,0 +1,50 @@
+/**
+ * @type import('hardhat/config').HardhatUserConfig
+ */
+
+require("dotenv").config();
+require("@nomiclabs/hardhat-ethers");
+require("@nomiclabs/hardhat-waffle");
+require('solidity-coverage')
+require("@nomiclabs/hardhat-etherscan");
+
+module.exports = {
+  solidity: {
+    version: "0.5.17",
+    settings: {
+      optimizer: {
+        enabled: true,
+        runs: 200,
+      },
+    },
+  },
+  networks: {
+    binance: {
+      url: `https://bsc-dataseed.binance.org/`,
+      accounts: {
+        mnemonic: process.env.MNEMONIC,
+      },
+      timeout: 200000000,
+      gasPrice: Number('100' + '000000000'), // first two decimails should be current gas price
+    },
+    mainnetFork: {
+      url: "http://127.0.0.1:8545",
+      accounts: {
+        mnemonic: process.env.MNEMONIC,
+      },
+      default_balance_ether: 10000000000,
+      total_accounts: 10,
+      gasLimit: 20000000,
+      fork: `https://bsc-dataseed.binance.org/`,
+      timeout: 200000000,
+    },
+    coverage: {
+      url: 'http://127.0.0.1:8555', // Coverage launches its own ganache-cli client
+      gasPrice: 0,
+      blockGasLimit: 100000000,
+    },
+  },
+  etherscan: {
+    apiKey: process.env.ETHERSCAN_API_KEY,
+  },
+};
