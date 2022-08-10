@@ -1,5 +1,5 @@
 /*
-    Copyright 2020 Dynamic Dollar Devs, based on the works of the Empty Set Squad
+    Copyright 2022 Dynamic Dollar Devs, based on the works of the Empty Set Squad
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@ library Constants {
     uint256 private constant CONTRACTION_ORACLE_RESERVE_MINIMUM = 1e9; // 1,000 BUSD
 
     /* Bonding */
-    uint256 private constant INITIAL_STAKE_MULTIPLE = 1e6; // 100 DSD -> 100M DSDS
+    uint256 private constant INITIAL_STAKE_MULTIPLE = 1e6; // 100 DOGEDOLA -> 100M DOGEDOLAS
 
     /* Epoch */
     struct EpochStrategy {
@@ -43,7 +43,7 @@ library Constants {
     }
 
     uint256 private constant EPOCH_OFFSET = 0;
-    uint256 private constant EPOCH_START = 1606348800;
+    uint256 private constant EPOCH_START = 1660134170;
     uint256 private constant EPOCH_PERIOD = 7200;
 
     /* Governance */
@@ -80,13 +80,13 @@ library Constants {
     address private constant TREASURY_ADDRESS = address(0xC7DA8087b8BA11f0892f1B0BFacfD44C116B303e);
 
     /* DIP-10 */
-    uint256 private constant CDSD_REDEMPTION_RATIO = 50; // 50%
+    uint256 private constant CDOGEDOLA_REDEMPTION_RATIO = 50; // 50%
     uint256 private constant CONTRACTION_BONDING_REWARDS = 51000000000000; // ~25% APY
-    uint256 private constant MAX_CDSD_BONDING_REWARDS = 970000000000000; // 0.097% per epoch -> 2x in 60 * 12 epochs
+    uint256 private constant MAX_CDOGEDOLA_BONDING_REWARDS = 970000000000000; // 0.097% per epoch -> 2x in 60 * 12 epochs
    
     /* DIP-17 */
-    uint256 private constant BASE_EARNABLE_FACTOR = 1e17; // 10% - Minimum Amount of CDSD earnable for DSD burned
-    uint256 private constant MAX_EARNABLE_FACTOR = 5e18; // 500% - Maximum Amount of CDSD earnable for DSD burned
+    uint256 private constant BASE_EARNABLE_FACTOR = 1e17; // 10% - Minimum Amount of CDOGEDOLA earnable for DOGEDOLA burned
+    uint256 private constant MAX_EARNABLE_FACTOR = 5e18; // 500% - Maximum Amount of CDOGEDOLA earnable for DOGEDOLA burned
 
     /**
      * Getters
@@ -211,16 +211,16 @@ library Constants {
         return TREASURY_ADDRESS;
     }
 
-    function getCDSDRedemptionRatio() internal pure returns (uint256) {
-        return CDSD_REDEMPTION_RATIO;
+    function getCDOGEDOLARedemptionRatio() internal pure returns (uint256) {
+        return CDOGEDOLA_REDEMPTION_RATIO;
     }
 
     function getContractionBondingRewards() internal pure returns (Decimal.D256 memory) {
         return Decimal.D256({value: CONTRACTION_BONDING_REWARDS});
     }
 
-    function maxCDSDBondingRewards() internal pure returns (Decimal.D256 memory) {
-        return Decimal.D256({value: MAX_CDSD_BONDING_REWARDS});
+    function maxCDOGEDOLABondingRewards() internal pure returns (Decimal.D256 memory) {
+        return Decimal.D256({value: MAX_CDOGEDOLA_BONDING_REWARDS});
     }
 
     function getBaseEarnableFactor() internal pure returns (Decimal.D256 memory) {

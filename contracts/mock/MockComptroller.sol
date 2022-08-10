@@ -1,5 +1,5 @@
 /*
-    Copyright 2020 Dynamic Dollar Devs, based on the works of the Empty Set Squad
+    Copyright 2022 Dynamic Dollar Devs, based on the works of the Empty Set Squad
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -23,17 +23,17 @@ import ".//MockContractionDollar.sol";
 import "./MockState.sol";
 
 contract MockComptroller is Comptroller, MockState {
-    IDollar private _cdsd;
+    IDollar private _cdogedola;
 
     constructor(address pool) public {
         _state.provider.dollar = new Dollar();
-        _cdsd = new MockContractionDollar();
+        _cdogedola = new MockContractionDollar();
         _state.provider.pool = pool;
         _state10.globalInterestMultiplier = 1e18;
     }
 
-    function cdsd() public view returns (IDollar) {
-        return IDollar(_cdsd);
+    function cdogedola() public view returns (IDollar) {
+        return IDollar(_cdogedola);
     }
 
     function pool() public view returns (address) {
@@ -71,7 +71,7 @@ contract MockComptroller is Comptroller, MockState {
     }
 
     function mintCDOGEDOLAAndIncreaseDOGEDOLABurnedE(address account, uint256 amount) external {
-        cdsd().mint(account, amount);
+        cdogedola().mint(account, amount);
         // emulate burning of DOGEDOLA for CDOGEDOLA
         super.incrementBalanceOfEarnableCDOGEDOLA(account, amount);
         super.incrementTotalCDOGEDOLAEarnable(amount);

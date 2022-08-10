@@ -4,10 +4,10 @@ const { BN, expectRevert, time } = require("@openzeppelin/test-helpers");
 const { expect } = require("chai");
 
 const MockComptroller = contract.fromArtifact("MockComptroller");
-const MockComptrollerAndMarket = contract.fromArtifact("MockCDSDMarket");
+const MockComptrollerAndMarket = contract.fromArtifact("MockCDOGEDOLAMarket");
 const Dollar = contract.fromArtifact("Dollar");
 
-const BOOTSTRAPPING_PERIOD = 150; // DSD bootstraping
+const BOOTSTRAPPING_PERIOD = 150; // DOGEDOLA bootstraping
 
 describe("Comptroller", function () {
   const [ownerAddress, userAddress, poolAddress, circulating] = accounts;
@@ -166,7 +166,7 @@ describe("Comptroller", function () {
         gas: 8000000,
       });
       this.dollarFromComptrollerWithMarket = await Dollar.at(await this.comptrollerWithMarket.dollar());
-      this.cdsdFromComptrollerWithMarket = await Dollar.at(await this.comptrollerWithMarket.cdsd());
+      this.cdogedolaFromComptrollerWithMarket = await Dollar.at(await this.comptrollerWithMarket.cdogedola());
     });
 
     describe("no one is bonded", function () {
@@ -193,12 +193,12 @@ describe("Comptroller", function () {
         ).to.be.bignumber.equal(new BN(0));
       });
 
-      it("has no redeemable cDSD", async function () {
-        expect(await this.comptroller.totalCDSDRedeemable()).to.be.bignumber.equal(new BN(0));
+      it("has no redeemable cDOGEDOLA", async function () {
+        expect(await this.comptroller.totalCDOGEDOLARedeemable()).to.be.bignumber.equal(new BN(0));
       });
     });
 
-    describe("bonded DSD but no bonded cDSD", function () {
+    describe("bonded DOGEDOLA but no bonded cDOGEDOLA", function () {
       beforeEach(async function () {
         await this.comptrollerWithMarket.mintToE(this.comptrollerWithMarket.address, new BN(9000));
         await this.comptrollerWithMarket.incrementTotalBondedE(new BN(1000));
@@ -223,18 +223,18 @@ describe("Comptroller", function () {
         ).to.be.bignumber.equal(new BN(9000).add(this.daoReward));
       });
 
-      it("has no redeemable DSD", async function () {
-        expect(await this.comptrollerWithMarket.totalCDSDRedeemable()).to.be.bignumber.equal(new BN(0));
+      it("has no redeemable DOGEDOLA", async function () {
+        expect(await this.comptrollerWithMarket.totalCDOGEDOLARedeemable()).to.be.bignumber.equal(new BN(0));
       });
     });
 
-    describe("bonded DSD and burned DSD", function () {
+    describe("bonded DOGEDOLA and burned DOGEDOLA", function () {
       beforeEach(async function () {
         await this.comptrollerWithMarket.mintToE(userAddress, new BN(1000));
         await this.dollarFromComptrollerWithMarket.approve(this.comptrollerWithMarket.address, new BN(1000), {
           from: userAddress,
         });
-        await this.comptrollerWithMarket.burnDSDForCDSD(new BN(1000), { from: userAddress });
+        await this.comptrollerWithMarket.burnDOGEDOLAForCDOGEDOLA(new BN(1000), { from: userAddress });
 
         await this.comptrollerWithMarket.mintToE(this.comptrollerWithMarket.address, new BN(9000));
         await this.comptrollerWithMarket.incrementTotalBondedE(new BN(1000));
@@ -261,19 +261,19 @@ describe("Comptroller", function () {
         ).to.be.bignumber.equal(new BN(9000));
       });
 
-      it("has redeemable DSD", async function () {
-        expect(await this.comptrollerWithMarket.totalCDSDRedeemable()).to.be.bignumber.equal(new BN(1000));
+      it("has redeemable DOGEDOLA", async function () {
+        expect(await this.comptrollerWithMarket.totalCDOGEDOLARedeemable()).to.be.bignumber.equal(new BN(1000));
       });
     });
 
-    describe("bonded DSD and bonded cDSD", function () {
+    describe("bonded DOGEDOLA and bonded cDOGEDOLA", function () {
       beforeEach(async function () {
         await this.comptrollerWithMarket.mintToE(userAddress, new BN(1000));
         await this.dollarFromComptrollerWithMarket.approve(this.comptrollerWithMarket.address, new BN(1000), {
           from: userAddress,
         });
 
-        await this.comptrollerWithMarket.burnDSDForCDSDAndBond(new BN(1000), { from: userAddress });
+        await this.comptrollerWithMarket.burnDOGEDOLAForCDOGEDOLAAndBond(new BN(1000), { from: userAddress });
 
         await this.comptrollerWithMarket.mintToE(this.comptrollerWithMarket.address, new BN(9000));
         await this.comptrollerWithMarket.incrementTotalBondedE(new BN(1000));
@@ -300,41 +300,41 @@ describe("Comptroller", function () {
         ).to.be.bignumber.equal(new BN(9000));
       });
 
-      it("has redeemable DSD", async function () {
-        expect(await this.comptrollerWithMarket.totalCDSDRedeemable()).to.be.bignumber.equal(new BN(2000));
+      it("has redeemable DOGEDOLA", async function () {
+        expect(await this.comptrollerWithMarket.totalCDOGEDOLARedeemable()).to.be.bignumber.equal(new BN(2000));
       });
     });
   });
 
-  describe("increaseCDSDSupply", function () {
+  describe("increaseCDOGEDOLASupply", function () {
     beforeEach(async function () {
       this.comptrollerWithMarket = await MockComptrollerAndMarket.new(poolAddress, {
         from: ownerAddress,
         gas: 8000000,
       });
       this.dollarFromComptrollerWithMarket = await Dollar.at(await this.comptrollerWithMarket.dollar());
-      this.cdsdFromComptrollerWithMarket = await Dollar.at(await this.comptrollerWithMarket.cdsd());
+      this.cdogedolaFromComptrollerWithMarket = await Dollar.at(await this.comptrollerWithMarket.cdogedola());
     });
 
-    describe("no DSD bonded, no burned DSD", function () {
+    describe("no DOGEDOLA bonded, no burned DOGEDOLA", function () {
       beforeEach(async function () {
         await this.comptrollerWithMarket.contractionIncentivesE(new BN(1000));
       });
 
       it("shares no rewards", async function () {
         expect(await this.dollarFromComptrollerWithMarket.totalSupply()).to.be.bignumber.equal(new BN(0));
-        expect(await this.cdsdFromComptrollerWithMarket.totalSupply()).to.be.bignumber.equal(new BN(0));
+        expect(await this.cdogedolaFromComptrollerWithMarket.totalSupply()).to.be.bignumber.equal(new BN(0));
 
         expect(
           await this.dollarFromComptrollerWithMarket.balanceOf(this.comptrollerWithMarket.address),
         ).to.be.bignumber.equal(new BN(0));
         expect(
-          await this.cdsdFromComptrollerWithMarket.balanceOf(this.comptrollerWithMarket.address),
+          await this.cdogedolaFromComptrollerWithMarket.balanceOf(this.comptrollerWithMarket.address),
         ).to.be.bignumber.equal(new BN(0));
       });
     });
 
-    describe("bonded DSD, no burned DSD", function () {
+    describe("bonded DOGEDOLA, no burned DOGEDOLA", function () {
       beforeEach(async function () {
         await this.comptrollerWithMarket.mintToE(this.comptrollerWithMarket.address, new BN(900000));
         await this.comptrollerWithMarket.incrementTotalBondedE(new BN(900000));
@@ -347,116 +347,116 @@ describe("Comptroller", function () {
         expect(await this.dollarFromComptrollerWithMarket.totalSupply()).to.be.bignumber.equal(
           new BN(900000).add(this.daoContractionRewards),
         );
-        expect(await this.cdsdFromComptrollerWithMarket.totalSupply()).to.be.bignumber.equal(new BN(0));
+        expect(await this.cdogedolaFromComptrollerWithMarket.totalSupply()).to.be.bignumber.equal(new BN(0));
 
         expect(
           await this.dollarFromComptrollerWithMarket.balanceOf(this.comptrollerWithMarket.address),
         ).to.be.bignumber.equal(new BN(900000).add(this.daoContractionRewards));
         expect(
-          await this.cdsdFromComptrollerWithMarket.balanceOf(this.comptrollerWithMarket.address),
+          await this.cdogedolaFromComptrollerWithMarket.balanceOf(this.comptrollerWithMarket.address),
         ).to.be.bignumber.equal(new BN(0));
       });
     });
 
-    describe("bonded DSD, burned DSD", function () {
+    describe("bonded DOGEDOLA, burned DOGEDOLA", function () {
       beforeEach(async function () {
         await this.comptrollerWithMarket.mintToE(this.comptrollerWithMarket.address, new BN(900000));
         await this.comptrollerWithMarket.incrementTotalBondedE(new BN(900000));
 
-        // burn DSD for cDSD and bond cDSD
+        // burn DOGEDOLA for cDOGEDOLA and bond cDOGEDOLA
         await this.comptrollerWithMarket.mintToE(userAddress, new BN(1000));
         await this.dollarFromComptrollerWithMarket.approve(this.comptrollerWithMarket.address, new BN(1000), {
           from: userAddress,
         });
-        await this.comptrollerWithMarket.burnDSDForCDSD(new BN(1000), { from: userAddress });
+        await this.comptrollerWithMarket.burnDOGEDOLAForCDOGEDOLA(new BN(1000), { from: userAddress });
 
         await this.comptrollerWithMarket.contractionIncentivesE(new BN(1000));
-        this.cDSDSupplyReward = new BN(950); // 95%
+        this.cDOGEDOLASupplyReward = new BN(950); // 95%
         this.daoContractionRewards = new BN(45);
       });
 
-      it("shares rewards to dao's bonded DSD holders and bonded CDSD holders", async function () {
+      it("shares rewards to dao's bonded DOGEDOLA holders and bonded CDOGEDOLA holders", async function () {
         expect(await this.dollarFromComptrollerWithMarket.totalSupply()).to.be.bignumber.equal(
           new BN(900000).add(this.daoContractionRewards),
         );
-        expect(await this.cdsdFromComptrollerWithMarket.totalSupply()).to.be.bignumber.equal(new BN(1000));
+        expect(await this.cdogedolaFromComptrollerWithMarket.totalSupply()).to.be.bignumber.equal(new BN(1000));
 
         expect(
           await this.dollarFromComptrollerWithMarket.balanceOf(this.comptrollerWithMarket.address),
         ).to.be.bignumber.equal(new BN(900000).add(this.daoContractionRewards));
         expect(
-          await this.cdsdFromComptrollerWithMarket.balanceOf(this.comptrollerWithMarket.address),
+          await this.cdogedolaFromComptrollerWithMarket.balanceOf(this.comptrollerWithMarket.address),
         ).to.be.bignumber.equal(new BN(0));
       });
     });
 
-    describe("bonded DSD, burned DSD for bonded cDSD", function () {
+    describe("bonded DOGEDOLA, burned DOGEDOLA for bonded cDOGEDOLA", function () {
       beforeEach(async function () {
         await this.comptrollerWithMarket.mintToE(this.comptrollerWithMarket.address, new BN(900000));
         await this.comptrollerWithMarket.incrementTotalBondedE(new BN(900000));
 
-        // burn DSD for cDSD and bond cDSD
+        // burn DOGEDOLA for cDOGEDOLA and bond cDOGEDOLA
         await this.comptrollerWithMarket.mintToE(userAddress, new BN(1000));
         await this.dollarFromComptrollerWithMarket.approve(this.comptrollerWithMarket.address, new BN(1000), {
           from: userAddress,
         });
 
-        await this.comptrollerWithMarket.burnDSDForCDSDAndBond(new BN(1000), { from: userAddress });
+        await this.comptrollerWithMarket.burnDOGEDOLAForCDOGEDOLAAndBond(new BN(1000), { from: userAddress });
 
         await this.comptrollerWithMarket.contractionIncentivesE(new BN(1000));
-        this.cDSDSupplyReward = new BN(950); // 95%
+        this.cDOGEDOLASupplyReward = new BN(950); // 95%
         this.daoContractionRewards = new BN(45);
       });
 
-      it("shares rewards to dao's bonded DSD holders and bonded CDSD holders", async function () {
+      it("shares rewards to dao's bonded DOGEDOLA holders and bonded CDOGEDOLA holders", async function () {
         expect(await this.dollarFromComptrollerWithMarket.totalSupply()).to.be.bignumber.equal(
           new BN(900000).add(this.daoContractionRewards),
         );
-        expect(await this.cdsdFromComptrollerWithMarket.totalSupply()).to.be.bignumber.equal(new BN(1000));
+        expect(await this.cdogedolaFromComptrollerWithMarket.totalSupply()).to.be.bignumber.equal(new BN(1000));
 
         expect(
           await this.dollarFromComptrollerWithMarket.balanceOf(this.comptrollerWithMarket.address),
         ).to.be.bignumber.equal(new BN(900000).add(this.daoContractionRewards));
         expect(
-          await this.cdsdFromComptrollerWithMarket.balanceOf(this.comptrollerWithMarket.address),
+          await this.cdogedolaFromComptrollerWithMarket.balanceOf(this.comptrollerWithMarket.address),
         ).to.be.bignumber.equal(new BN(1000));
       });
     });
 
-    describe("cannot increase more cDSD than earnable supply ", function () {
+    describe("cannot increase more cDOGEDOLA than earnable supply ", function () {
       beforeEach(async function () {
         await this.comptrollerWithMarket.mintToE(this.comptrollerWithMarket.address, new BN(900000));
         await this.comptrollerWithMarket.incrementTotalBondedE(new BN(900000));
 
-        // burn DSD for cDSD and bond cDSD
+        // burn DOGEDOLA for cDOGEDOLA and bond cDOGEDOLA
         await this.comptrollerWithMarket.mintToE(userAddress, new BN(10));
         await this.dollarFromComptrollerWithMarket.approve(this.comptrollerWithMarket.address, new BN(10), {
           from: userAddress,
         });
 
-        await this.comptrollerWithMarket.burnDSDForCDSDAndBond(new BN(10), { from: userAddress }); // can earn only 20 i.e 100% of burned
+        await this.comptrollerWithMarket.burnDOGEDOLAForCDOGEDOLAAndBond(new BN(10), { from: userAddress }); // can earn only 20 i.e 100% of burned
 
         await this.comptrollerWithMarket.contractionIncentivesE(new BN(1000));
-        this.cDSDSupplyReward = new BN(10); // limit redeemable
+        this.cDOGEDOLASupplyReward = new BN(10); // limit redeemable
         this.daoContractionRewards = new BN(45);
       });
 
-      it("shares rewards bonded CDSD holders only up to earnable rewards", async function () {
+      it("shares rewards bonded CDOGEDOLA holders only up to earnable rewards", async function () {
         expect(await this.dollarFromComptrollerWithMarket.totalSupply()).to.be.bignumber.equal(
           new BN(900000).add(this.daoContractionRewards),
         );
-        expect(await this.cdsdFromComptrollerWithMarket.totalSupply()).to.be.bignumber.equal(this.cDSDSupplyReward);
+        expect(await this.cdogedolaFromComptrollerWithMarket.totalSupply()).to.be.bignumber.equal(this.cDOGEDOLASupplyReward);
 
         expect(
           await this.dollarFromComptrollerWithMarket.balanceOf(this.comptrollerWithMarket.address),
         ).to.be.bignumber.equal(new BN(900000).add(this.daoContractionRewards));
         expect(
-          await this.cdsdFromComptrollerWithMarket.balanceOf(this.comptrollerWithMarket.address),
-        ).to.be.bignumber.equal(this.cDSDSupplyReward);
+          await this.cdogedolaFromComptrollerWithMarket.balanceOf(this.comptrollerWithMarket.address),
+        ).to.be.bignumber.equal(this.cDOGEDOLASupplyReward);
       });
     });
 
-    describe("cannot increase more DSD than 20% APY", function () {
+    describe("cannot increase more DOGEDOLA than 20% APY", function () {
       beforeEach(async function () {
         await this.comptrollerWithMarket.mintToE(this.comptrollerWithMarket.address, 9000);
         await this.comptrollerWithMarket.incrementTotalBondedE(9000);
@@ -466,16 +466,16 @@ describe("Comptroller", function () {
         this.totalAfterRewards = Number(9000);
       });
 
-      it("shares rewards to dao's bonded DSD holders", async function () {
+      it("shares rewards to dao's bonded DOGEDOLA holders", async function () {
         expect(await this.dollarFromComptrollerWithMarket.totalSupply()).to.be.bignumber.equal(
           new BN(this.totalAfterRewards),
         );
-        expect(await this.cdsdFromComptrollerWithMarket.totalSupply()).to.be.bignumber.equal(new BN(0));
+        expect(await this.cdogedolaFromComptrollerWithMarket.totalSupply()).to.be.bignumber.equal(new BN(0));
         expect(
           await this.dollarFromComptrollerWithMarket.balanceOf(this.comptrollerWithMarket.address),
         ).to.be.bignumber.equal(new BN(this.totalAfterRewards));
         expect(
-          await this.cdsdFromComptrollerWithMarket.balanceOf(this.comptrollerWithMarket.address),
+          await this.cdogedolaFromComptrollerWithMarket.balanceOf(this.comptrollerWithMarket.address),
         ).to.be.bignumber.equal(new BN(0));
       });
     });

@@ -8,7 +8,7 @@ const MockToken = contract.fromArtifact("MockToken");
 const MockUniswapV2PairLiquidity = contract.fromArtifact("MockUniswapV2PairLiquidity");
 const MockSettableDAO = contract.fromArtifact("MockSettableDAO");
 
-const INITIAL_STAKE_MULTIPLE = new BN(10).pow(new BN(6)); // 100 DSD -> 100M DSDS
+const INITIAL_STAKE_MULTIPLE = new BN(10).pow(new BN(6)); // 100 DOGEDOLA -> 100M DOGEDOLAS
 
 const FROZEN = new BN(0);
 const FLUID = new BN(1);
@@ -26,7 +26,7 @@ describe("Pool", function () {
       gas: 8000000,
     });
     await this.dao.set(1);
-    this.dollar = await MockToken.new("Dynamic Set Dollar", "DSD", 18, {
+    this.dollar = await MockToken.new("Dynamic Set Dollar", "DOGEDOLA", 18, {
       from: ownerAddress,
       gas: 8000000,
     });
@@ -989,7 +989,7 @@ describe("Pool", function () {
         });
 
         it("is fluid", async function () {
-          // // allows adding liquidity: https://github.com/dynamicsetdollar/dsd-protocol/commit/797a13fd23ba645c8e7b6debf9253f671814be47
+          // // allows adding liquidity: https://github.com/dynamicsetdollar/dogedola-protocol/commit/797a13fd23ba645c8e7b6debf9253f671814be47
           expect(await this.pool.statusOf(userAddress)).to.be.bignumber.equal(FLUID);
         });
 
@@ -1043,7 +1043,7 @@ describe("Pool", function () {
           await incrementEpoch(this.dao);
           await this.dollar.mint(this.pool.address, 1000);
 
-          // 1000 DSD + 3000 USDC
+          // 1000 DOGEDOLA + 3000 USDC
           await this.univ2.set(1000, 3000, 10);
 
           this.result = await this.pool.provide(1000, {
@@ -1053,7 +1053,7 @@ describe("Pool", function () {
         });
 
         it("is fluid", async function () {
-          // allows adding liquidity: https://github.com/dynamicsetdollar/dsd-protocol/commit/797a13fd23ba645c8e7b6debf9253f671814be47
+          // allows adding liquidity: https://github.com/dynamicsetdollar/dogedola-protocol/commit/797a13fd23ba645c8e7b6debf9253f671814be47
           expect(await this.pool.statusOf(userAddress)).to.be.bignumber.equal(FLUID);
         });
 

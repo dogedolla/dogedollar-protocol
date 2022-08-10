@@ -1,5 +1,5 @@
 /*
-    Copyright 2020 Dynamic Dollar Devs, based on the works of the Empty Set Squad
+    Copyright 2022 Dynamic Dollar Devs, based on the works of the Empty Set Squad
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ contract CPoolGetters is CPoolState {
         return IDAO(Constants.getDaoAddress());
     }
 
-    function cdsd() public view returns (IDollar) {
+    function cdogedola() public view returns (IDollar) {
         return IDollar(Constants.getContractionDollarAddress());
     }
 
@@ -61,7 +61,7 @@ contract CPoolGetters is CPoolState {
     }
 
     function totalRewarded() public view returns (uint256) {
-        return cdsd().balanceOf(address(this)).sub(totalClaimable());
+        return cdogedola().balanceOf(address(this)).sub(totalClaimable());
     }
 
     function paused() public view returns (bool) {

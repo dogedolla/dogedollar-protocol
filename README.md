@@ -45,7 +45,7 @@ You can also run tests with solidity coverage:
 
 ## audit of forked codebase
 
-is available [here](https://github.com/dynamicdollardevs/dsd/blob/master/audit/REP-Dollar-06-11-20.pdf).
+is available [here](https://github.com/dynamicdollardevs/dogedola/blob/master/audit/REP-Dollar-06-11-20.pdf).
 
 ### How to verify contracts on etherscan
 
@@ -57,7 +57,7 @@ Example:
 this project is an experiment - the protocol is audited, and we've put a significant amount of work into testing as well as generally de-risking the design of its core mechanism, however participants should take great caution as bugs resulting in loss of funds are always a possibility.
 
 ```
-Copyright 2020 Dynamic Dollar Devs, based on the works of the Empty Doge Squad
+Copyright 2022 Dynamic Dollar Devs, based on the works of the Empty Doge Squad
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use the included code except in compliance with the License.

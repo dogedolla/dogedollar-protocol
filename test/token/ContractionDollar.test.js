@@ -65,27 +65,27 @@ describe('ContractionDollar', function () {
 
     beforeEach(async function () {
 
-        this.cdsd = await ContractionDollar.new()
+        this.cdogedola = await ContractionDollar.new()
     })
 
     describe('mint', function () {
         describe('not from dao', function () {
             it('reverts', async function () {
                 await expectRevert(
-                    this.cdsd.mint(userAddress, 100, { from: userAddress }),
-                    'CDSD: only DAO is allowed to mint'
+                    this.cdogedola.mint(userAddress, 100, { from: userAddress }),
+                    'CDOGEDOLA: only DAO is allowed to mint'
                 )
             })
         })
 
         describe('from dao', function () {
             beforeEach(async function () {
-                await this.cdsd.mint(userAddress, 100)
+                await this.cdogedola.mint(userAddress, 100)
             })
 
             it('mints new ContractionDollar tokens', async function () {
                 expect(
-                    await this.cdsd.balanceOf(userAddress)
+                    await this.cdogedola.balanceOf(userAddress)
                 ).to.be.bignumber.equal(new BN(100))
             })
         })
@@ -95,7 +95,7 @@ describe('ContractionDollar', function () {
         describe('zero deadline', function () {
             beforeEach(async function () {
                 this.signature = await signPermit(
-                    this.cdsd.address,
+                    this.cdogedola.address,
                     userPrivateKey,
                     {
                         owner: userAddress,
@@ -109,7 +109,7 @@ describe('ContractionDollar', function () {
 
             it('reverts', async function () {
                 await expectRevert(
-                    this.cdsd.permit(
+                    this.cdogedola.permit(
                         userAddress,
                         ownerAddress,
                         1234,
@@ -127,7 +127,7 @@ describe('ContractionDollar', function () {
             beforeEach(async function () {
                 const expiration = (await time.latest()) + 100
                 const signature = await signPermit(
-                    this.cdsd.address,
+                    this.cdogedola.address,
                     userPrivateKey,
                     {
                         owner: userAddress,
@@ -138,7 +138,7 @@ describe('ContractionDollar', function () {
                     }
                 )
 
-                await this.cdsd.permit(
+                await this.cdogedola.permit(
                     userAddress,
                     ownerAddress,
                     1234,
@@ -151,7 +151,7 @@ describe('ContractionDollar', function () {
 
             it('approves', async function () {
                 expect(
-                    await this.cdsd.allowance(userAddress, ownerAddress)
+                    await this.cdogedola.allowance(userAddress, ownerAddress)
                 ).to.be.bignumber.equal(new BN(1234))
             })
         })
@@ -160,7 +160,7 @@ describe('ContractionDollar', function () {
             beforeEach(async function () {
                 this.expiration = (await time.latest()) + 100
                 this.signature = await signPermit(
-                    this.cdsd.address,
+                    this.cdogedola.address,
                     userPrivateKey,
                     {
                         owner: userAddress,
@@ -174,7 +174,7 @@ describe('ContractionDollar', function () {
 
             it('reverts', async function () {
                 await expectRevert(
-                    this.cdsd.permit(
+                    this.cdogedola.permit(
                         userAddress,
                         ownerAddress,
                         1234,
@@ -192,7 +192,7 @@ describe('ContractionDollar', function () {
             beforeEach(async function () {
                 this.expiration = (await time.latest()) + 100
                 const signature = await signPermit(
-                    this.cdsd.address,
+                    this.cdogedola.address,
                     userPrivateKey,
                     {
                         owner: userAddress,
@@ -203,7 +203,7 @@ describe('ContractionDollar', function () {
                     }
                 )
 
-                await this.cdsd.permit(
+                await this.cdogedola.permit(
                     userAddress,
                     ownerAddress,
                     1234,
@@ -214,7 +214,7 @@ describe('ContractionDollar', function () {
                 )
 
                 this.signature = await signPermit(
-                    this.cdsd.address,
+                    this.cdogedola.address,
                     userPrivateKey,
                     {
                         owner: userAddress,
@@ -228,7 +228,7 @@ describe('ContractionDollar', function () {
 
             it('reverts', async function () {
                 await expectRevert(
-                    this.cdsd.permit(
+                    this.cdogedola.permit(
                         userAddress,
                         ownerAddress,
                         5678,
@@ -246,7 +246,7 @@ describe('ContractionDollar', function () {
             beforeEach(async function () {
                 this.expiration = (await time.latest()) - 100
                 this.signature = await signPermit(
-                    this.cdsd.address,
+                    this.cdogedola.address,
                     userPrivateKey,
                     {
                         owner: userAddress,
@@ -260,7 +260,7 @@ describe('ContractionDollar', function () {
 
             it('reverts', async function () {
                 await expectRevert(
-                    this.cdsd.permit(
+                    this.cdogedola.permit(
                         userAddress,
                         ownerAddress,
                         1234,
@@ -278,7 +278,7 @@ describe('ContractionDollar', function () {
             beforeEach(async function () {
                 this.expiration = (await time.latest()) + 100
                 this.signature = await signPermit(
-                    this.cdsd.address,
+                    this.cdogedola.address,
                     userPrivateKey,
                     {
                         owner: userAddress,
@@ -292,7 +292,7 @@ describe('ContractionDollar', function () {
 
             it('reverts', async function () {
                 await expectRevert(
-                    this.cdsd.permit(
+                    this.cdogedola.permit(
                         userAddress,
                         ownerAddress,
                         1235,
@@ -309,15 +309,15 @@ describe('ContractionDollar', function () {
 
     describe('transferFrom', function () {
         beforeEach(async function () {
-            await this.cdsd.mint(ownerAddress, 100)
+            await this.cdogedola.mint(ownerAddress, 100)
         })
 
         describe('amount equals approved', function () {
             beforeEach('transferFrom', async function () {
-                await this.cdsd.approve(userAddress, 100, {
+                await this.cdogedola.approve(userAddress, 100, {
                     from: ownerAddress,
                 })
-                this.result = await this.cdsd.transferFrom(
+                this.result = await this.cdogedola.transferFrom(
                     ownerAddress,
                     userAddress,
                     100,
@@ -328,7 +328,7 @@ describe('ContractionDollar', function () {
             })
 
             it('decrements allowance', async function () {
-                const allowance = await this.cdsd.allowance(
+                const allowance = await this.cdogedola.allowance(
                     ownerAddress,
                     userAddress
                 )
@@ -346,14 +346,14 @@ describe('ContractionDollar', function () {
 
         describe('amount greater than approved', function () {
             beforeEach('transferFrom', async function () {
-                await this.cdsd.approve(userAddress, 100, {
+                await this.cdogedola.approve(userAddress, 100, {
                     from: ownerAddress,
                 })
             })
 
             it('emits Transfer event', async function () {
                 await expectRevert(
-                    this.cdsd.transferFrom(ownerAddress, userAddress, 101, {
+                    this.cdogedola.transferFrom(ownerAddress, userAddress, 101, {
                         from: userAddress,
                     }),
                     'ERC20: transfer amount exceeds balance'
@@ -363,10 +363,10 @@ describe('ContractionDollar', function () {
 
         describe('approve unlimited', function () {
             beforeEach('transferFrom', async function () {
-                await this.cdsd.approve(userAddress, constants.MAX_UINT256, {
+                await this.cdogedola.approve(userAddress, constants.MAX_UINT256, {
                     from: ownerAddress,
                 })
-                const result = await this.cdsd.transferFrom(
+                const result = await this.cdogedola.transferFrom(
                     ownerAddress,
                     userAddress,
                     100,
@@ -376,7 +376,7 @@ describe('ContractionDollar', function () {
             })
 
             it('doesnt decrement allowance', async function () {
-                const allowance = await this.cdsd.allowance(
+                const allowance = await this.cdogedola.allowance(
                     ownerAddress,
                     userAddress
                 )

@@ -1,5 +1,5 @@
 {
-  "name": "dsd-hardhat",
+  "name": "dogedola-hardhat",
   "version": "1.0.0",
   "description": "DOGEDOLA protocol smart contracts",
   "main": "index.js",
@@ -112,10 +112,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dynamicsetdollar/dsd-hardhat.git"
+    "url": "git+https://github.com/dynamicsetdollar/dogedola-hardhat.git"
   },
   "bugs": {
-    "url": "https://github.com/dynamicsetdollar/dsd-hardhat/issues"
+    "url": "https://github.com/dynamicsetdollar/dogedola-hardhat/issues"
   },
-  "homepage": "https://github.com/dynamicsetdollar/dsd-hardhat#readme"
+  "homepage": "https://github.com/dynamicsetdollar/dogedola-hardhat#readme"
 }

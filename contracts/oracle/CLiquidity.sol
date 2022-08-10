@@ -1,5 +1,5 @@
 /*
-    Copyright 2020 Dynamic Dollar Devs, based on the works of the Empty Set Squad
+    Copyright 2022 Dynamic Dollar Devs, based on the works of the Empty Set Squad
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -25,15 +25,15 @@ import "./CPoolGetters.sol";
 
 contract CLiquidity is CPoolGetters {
     function addLiquidity(uint256 dollarAmount) internal returns (uint256, uint256) {
-        (address cdsd, address usdc) = (address(cdsd()), usdc());
-        (uint reserveA, uint reserveB) = getReserves(cdsd, usdc);
+        (address cdogedola, address usdc) = (address(cdogedola()), usdc());
+        (uint reserveA, uint reserveB) = getReserves(cdogedola, usdc);
 
         uint256 usdcAmount = (reserveA == 0 && reserveB == 0) ?
              dollarAmount :
              UniswapV2Library.quote(dollarAmount, reserveA, reserveB);
 
         address pair = address(univ2());
-        IERC20(cdsd).transfer(pair, dollarAmount);
+        IERC20(cdogedola).transfer(pair, dollarAmount);
         IERC20(usdc).transferFrom(msg.sender, pair, usdcAmount);
         return (usdcAmount, IUniswapV2Pair(pair).mint(address(this)));
     }

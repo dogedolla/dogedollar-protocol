@@ -12,7 +12,7 @@ const { expect } = require('chai')
 const MockBonding = contract.fromArtifact('MockBonding')
 const Dollar = contract.fromArtifact('Dollar')
 
-const INITIAL_STAKE_MULTIPLE = new BN(10).pow(new BN(6)) // 100 DSD -> 100M DSDS
+const INITIAL_STAKE_MULTIPLE = new BN(10).pow(new BN(6)) // 100 DOGEDOLA -> 100M DOGEDOLAS
 
 const FROZEN = new BN(0)
 const FLUID = new BN(1)
@@ -1061,7 +1061,7 @@ describe('Bonding', function () {
         })
 
         describe('when deposit', function () {
-            it('allows for deposit when fluid (DIP-3 https://github.com/dynamicsetdollar/dsd-protocol/commit/f4e34eadc76cfd0442273ee8061ac2868269720b)', async function () {
+            it('allows for deposit when fluid (DIP-3 https://github.com/dynamicsetdollar/dogedola-protocol/commit/f4e34eadc76cfd0442273ee8061ac2868269720b)', async function () {
                 // setup: extra tokens so user can deposit
                 await this.bonding.mintToE(userAddress, 500)
                 await this.dollar.approve(this.bonding.address, 500, {

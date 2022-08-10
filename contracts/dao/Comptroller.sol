@@ -1,5 +1,5 @@
 /*
-    Copyright 2020 Dynamic Dollar Devs, based on the works of the Empty Set Squad
+    Copyright 2022 Dynamic Dollar Devs, based on the works of the Empty Set Squad
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -77,10 +77,10 @@ contract Comptroller is Setters {
 
         // payout CPool rewards
         Decimal.D256 memory cPoolReward =
-            Decimal.D256({ value: cdsd().totalSupply() }).mul(Constants.getContractionPoolTargetSupply()).mul(
+            Decimal.D256({ value: cdogedola().totalSupply() }).mul(Constants.getContractionPoolTargetSupply()).mul(
                 Constants.getContractionPoolTargetReward()
             );
-        cdsd().mint(Constants.getContractionPoolAddress(), cPoolReward.value);
+        cdogedola().mint(Constants.getContractionPoolAddress(), cPoolReward.value);
 
         // DOGEDOLA bonded in the DAO receives a fixed APY
         uint256 daoBondingRewards;

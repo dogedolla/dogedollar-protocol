@@ -1,5 +1,5 @@
 /*
-    Copyright 2020 Dynamic Dollar Devs, based on the works of the Empty Set Squad
+    Copyright 2022 Dynamic Dollar Devs, based on the works of the Empty Set Squad
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -111,7 +111,7 @@ contract Getters is State {
 
     // DIP-10
     function totalCDOGEDOLABonded() public view returns (uint256) {
-        return cdsd().balanceOf(address(this));
+        return cdogedola().balanceOf(address(this));
     }
 
     function globalInterestMultiplier() public view returns (uint256) {
@@ -123,10 +123,10 @@ contract Getters is State {
     }
 
     function totalCDOGEDOLA() public view returns (uint256) {
-        return cdsd().totalSupply();
+        return cdogedola().totalSupply();
     }
 
-    function cdsd() public view returns (IDollar) {
+    function cdogedola() public view returns (IDollar) {
         return IDollar(Constants.getContractionDollarAddress());
     }
 

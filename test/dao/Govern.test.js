@@ -15,7 +15,7 @@ const UNDECIDED = new BN(0)
 const APPROVE = new BN(1)
 const REJECT = new BN(2)
 
-const INITIAL_STAKE_MULTIPLE = new BN(10).pow(new BN(6)) // 100 DSD -> 100M DSDS
+const INITIAL_STAKE_MULTIPLE = new BN(10).pow(new BN(6)) // 100 DOGEDOLA -> 100M DOGEDOLAS
 
 describe('Govern', function () {
     const [ownerAddress, userAddress, userAddress2, userAddress3] = accounts

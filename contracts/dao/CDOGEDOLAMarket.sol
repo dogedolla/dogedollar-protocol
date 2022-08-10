@@ -1,5 +1,5 @@
 /*
-    Copyright 2020 Dynamic Dollar Devs, based on the works of the Empty Set Squad
+    Copyright 2022 Dynamic Dollar Devs, based on the works of the Empty Set Squad
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -39,7 +39,7 @@ contract CDOGEDOLAMarket is Comptroller {
         balanceCheck();
 
         // mint equivalent CDOGEDOLA
-        cdsd().mint(msg.sender, amount);
+        cdogedola().mint(msg.sender, amount);
 
         // increment earnable
         uint256 earnable = Decimal.D256({value: amount}).mul(Getters.getEarnableFactor()).value; //DIP-17
@@ -65,7 +65,7 @@ contract CDOGEDOLAMarket is Comptroller {
 
         // mint CDOGEDOLA
         uint256 totalAmount = couponAmount.add(couponUnderlyingAmount);
-        cdsd().mint(msg.sender, totalAmount);
+        cdogedola().mint(msg.sender, totalAmount);
 
         emit CDOGEDOLAMinted(msg.sender, totalAmount);
 
@@ -91,7 +91,7 @@ contract CDOGEDOLAMarket is Comptroller {
         (uint256 userBonded, uint256 userDeposited,) = updateUserEarned(msg.sender);
 
         // deposit CDOGEDOLA amount
-        cdsd().transferFrom(msg.sender, address(this), amount);
+        cdogedola().transferFrom(msg.sender, address(this), amount);
 
         uint256 totalAmount = userBonded.add(amount);
         setDepositedCDOGEDOLAAmount(msg.sender, totalAmount);
@@ -109,7 +109,7 @@ contract CDOGEDOLAMarket is Comptroller {
         _unbondCDOGEDOLA(amount);
 
         // withdraw CDOGEDOLA
-        cdsd().transfer(msg.sender, amount);
+        cdogedola().transfer(msg.sender, amount);
 
         emit UnbondCDOGEDOLA(msg.sender, epoch().add(1), amount);
     }
@@ -140,7 +140,7 @@ contract CDOGEDOLAMarket is Comptroller {
         _unbondCDOGEDOLA(amount);
 
         // burn CDOGEDOLA
-        cdsd().burn(amount);
+        cdogedola().burn(amount);
         // mint DOGEDOLA
         mintToAccount(msg.sender, amount);
 
@@ -158,7 +158,7 @@ contract CDOGEDOLAMarket is Comptroller {
         if (userEarned > 0) {
             incrementBalanceOfEarnedCDOGEDOLA(account, userEarned);
             // mint acrued interest interest to DAO
-            cdsd().mint(address(this), userEarned);
+            cdogedola().mint(address(this), userEarned);
             incrementTotalCDOGEDOLAEarned(userEarned);
         }
 
