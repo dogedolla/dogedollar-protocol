@@ -11,7 +11,7 @@ const { expect } = require('chai')
 const Dollar = contract.fromArtifact('Dollar')
 const MockOracle = contract.fromArtifact('MockOracle')
 const MockUniswapV2PairTrade = contract.fromArtifact('MockUniswapV2PairTrade')
-const MockUSDC = contract.fromArtifact('MockUSDC')
+const MockBUSD = contract.fromArtifact('MockBUSD')
 
 const DECIMAL_DIFF = new BN(10).pow(new BN(12))
 const EPSILON = new BN(1).mul(DECIMAL_DIFF)
@@ -20,7 +20,7 @@ function cents(n) {
     return new BN(n).mul(new BN(10).pow(new BN(16)))
 }
 
-function usdc(n) {
+function busd(n) {
     return new BN(n).mul(new BN(10).pow(new BN(6)))
 }
 
@@ -36,10 +36,10 @@ async function priceForToBN(oracle) {
     return (await oracle.latestPrice()).value
 }
 
-async function simulateTrade(amm, esd, usdc) {
+async function simulateTrade(amm, esd, busd) {
     return await amm.simulateTrade(
         new BN(esd).mul(new BN(10).pow(new BN(18))),
-        new BN(usdc).mul(new BN(10).pow(new BN(6)))
+        new BN(busd).mul(new BN(10).pow(new BN(6)))
     )
 }
 
@@ -48,12 +48,12 @@ describe('Oracle', function () {
 
     beforeEach(async function () {
         this.dollar = await Dollar.new({ from: ownerAddress })
-        this.usdc = await MockUSDC.new({ from: ownerAddress })
+        this.busd = await MockBUSD.new({ from: ownerAddress })
         this.amm = await MockUniswapV2PairTrade.new({ from: ownerAddress })
         this.oracle = await MockOracle.new(
             this.amm.address,
             // this.dollar.address,
-            this.usdc.address,
+            this.busd.address,
             { from: ownerAddress, gas: 8000000 }
         )
         await time.increase(3600)
@@ -127,7 +127,7 @@ describe('Oracle', function () {
                         ).to.be.bignumber.closeTo(this.timestamp, new BN(1))
                         expect(
                             await this.oracle.reserve()
-                        ).to.be.bignumber.equal(usdc(1000000))
+                        ).to.be.bignumber.equal(busd(1000000))
                     })
                 })
 
@@ -154,7 +154,7 @@ describe('Oracle', function () {
                         ).to.be.bignumber.closeTo(this.timestamp, new BN(1))
                         expect(
                             await this.oracle.reserve()
-                        ).to.be.bignumber.equal(usdc(1000000))
+                        ).to.be.bignumber.equal(busd(1000000))
                     })
                 })
             })
@@ -182,7 +182,7 @@ describe('Oracle', function () {
                         ).to.be.bignumber.equal(this.timestamp)
                         expect(
                             await this.oracle.reserve()
-                        ).to.be.bignumber.equal(usdc(1000000))
+                        ).to.be.bignumber.equal(busd(1000000))
                     })
                 })
 
@@ -209,7 +209,7 @@ describe('Oracle', function () {
                         ).to.be.bignumber.equal(this.timestamp)
                         expect(
                             await this.oracle.reserve()
-                        ).to.be.bignumber.equal(usdc(1000000))
+                        ).to.be.bignumber.equal(busd(1000000))
                     })
                 })
             })
@@ -245,7 +245,7 @@ describe('Oracle', function () {
                         ).to.be.bignumber.equal(this.timestamp)
                         expect(
                             await this.oracle.reserve()
-                        ).to.be.bignumber.equal(usdc(1000000))
+                        ).to.be.bignumber.equal(busd(1000000))
                     })
                 })
 
@@ -278,7 +278,7 @@ describe('Oracle', function () {
                         ).to.be.bignumber.equal(this.timestamp)
                         expect(
                             await this.oracle.reserve()
-                        ).to.be.bignumber.equal(usdc(1000000))
+                        ).to.be.bignumber.equal(busd(1000000))
                     })
                 })
             })
@@ -314,7 +314,7 @@ describe('Oracle', function () {
                         ).to.be.bignumber.equal(this.timestamp)
                         expect(
                             await this.oracle.reserve()
-                        ).to.be.bignumber.equal(usdc(1100000))
+                        ).to.be.bignumber.equal(busd(1100000))
                     })
                 })
 
@@ -349,7 +349,7 @@ describe('Oracle', function () {
                         ).to.be.bignumber.equal(this.timestamp)
                         expect(
                             await this.oracle.reserve()
-                        ).to.be.bignumber.equal(usdc(1100000))
+                        ).to.be.bignumber.equal(busd(1100000))
                     })
                 })
             })
@@ -385,7 +385,7 @@ describe('Oracle', function () {
                         ).to.be.bignumber.equal(this.timestamp)
                         expect(
                             await this.oracle.reserve()
-                        ).to.be.bignumber.equal(usdc(1000000))
+                        ).to.be.bignumber.equal(busd(1000000))
                     })
                 })
 
@@ -418,7 +418,7 @@ describe('Oracle', function () {
                         ).to.be.bignumber.equal(this.timestamp)
                         expect(
                             await this.oracle.reserve()
-                        ).to.be.bignumber.equal(usdc(1000000))
+                        ).to.be.bignumber.equal(busd(1000000))
                     })
                 })
             })
@@ -454,7 +454,7 @@ describe('Oracle', function () {
                         ).to.be.bignumber.equal(this.timestamp)
                         expect(
                             await this.oracle.reserve()
-                        ).to.be.bignumber.equal(usdc(1100000))
+                        ).to.be.bignumber.equal(busd(1100000))
                     })
                 })
 
@@ -489,7 +489,7 @@ describe('Oracle', function () {
                         ).to.be.bignumber.equal(this.timestamp)
                         expect(
                             await this.oracle.reserve()
-                        ).to.be.bignumber.equal(usdc(1100000))
+                        ).to.be.bignumber.equal(busd(1100000))
                     })
                 })
 
@@ -524,7 +524,7 @@ describe('Oracle', function () {
                         ).to.be.bignumber.equal(this.timestamp)
                         expect(
                             await this.oracle.reserve()
-                        ).to.be.bignumber.equal(usdc(1050000))
+                        ).to.be.bignumber.equal(busd(1050000))
                     })
                 })
             })
@@ -562,7 +562,7 @@ describe('Oracle', function () {
                         ).to.be.bignumber.equal(this.timestamp)
                         expect(
                             await this.oracle.reserve()
-                        ).to.be.bignumber.equal(usdc(1000000))
+                        ).to.be.bignumber.equal(busd(1000000))
                     })
                 })
 
@@ -597,7 +597,7 @@ describe('Oracle', function () {
                         ).to.be.bignumber.equal(this.timestamp)
                         expect(
                             await this.oracle.reserve()
-                        ).to.be.bignumber.equal(usdc(1000000))
+                        ).to.be.bignumber.equal(busd(1000000))
                     })
                 })
             })
@@ -635,7 +635,7 @@ describe('Oracle', function () {
                         ).to.be.bignumber.equal(this.timestamp)
                         expect(
                             await this.oracle.reserve()
-                        ).to.be.bignumber.equal(usdc(1100000))
+                        ).to.be.bignumber.equal(busd(1100000))
                     })
                 })
 
@@ -672,7 +672,7 @@ describe('Oracle', function () {
                         ).to.be.bignumber.equal(this.timestamp)
                         expect(
                             await this.oracle.reserve()
-                        ).to.be.bignumber.equal(usdc(1100000))
+                        ).to.be.bignumber.equal(busd(1100000))
                     })
                 })
 
@@ -716,7 +716,7 @@ describe('Oracle', function () {
                         ).to.be.bignumber.equal(this.timestamp)
                         expect(
                             await this.oracle.reserve()
-                        ).to.be.bignumber.equal(usdc(1050000))
+                        ).to.be.bignumber.equal(busd(1050000))
                     })
                 })
             })
@@ -752,7 +752,7 @@ describe('Oracle', function () {
                         this.timestamp
                     )
                     expect(await this.oracle.reserve()).to.be.bignumber.equal(
-                        usdc(950000)
+                        busd(950000)
                     )
                 })
             })
@@ -787,7 +787,7 @@ describe('Oracle', function () {
                         this.timestamp
                     )
                     expect(await this.oracle.reserve()).to.be.bignumber.equal(
-                        usdc(3000)
+                        busd(3000)
                     )
                 })
             })
@@ -822,7 +822,7 @@ describe('Oracle', function () {
                         this.timestamp
                     )
                     expect(await this.oracle.reserve()).to.be.bignumber.equal(
-                        usdc(300000)
+                        busd(300000)
                     )
                 })
             })
@@ -856,13 +856,13 @@ describe('Oracle', function () {
                         this.timestamp
                     )
                     expect(await this.oracle.reserve()).to.be.bignumber.equal(
-                        usdc(3000)
+                        busd(3000)
                     )
                 })
             })
         })
 
-        describe('usdc blacklisted', function () {
+        describe('busd blacklisted', function () {
             describe('long before', function () {
                 beforeEach(async function () {
                     await simulateTrade(this.amm, 100000, 100000)
@@ -870,7 +870,7 @@ describe('Oracle', function () {
                     await time.increase(3600)
                     await this.oracle.capture({ from: ownerAddress })
                     await time.increase(86400)
-                    await this.usdc.setIsBlacklisted(true)
+                    await this.busd.setIsBlacklisted(true)
                     await this.oracle.capture({ from: ownerAddress })
                     this.timestamp = await time.latest()
                     this.timediff = this.timestamp
@@ -891,7 +891,7 @@ describe('Oracle', function () {
                         this.timestamp
                     )
                     expect(await this.oracle.reserve()).to.be.bignumber.equal(
-                        usdc(100000)
+                        busd(100000)
                     )
                 })
             })

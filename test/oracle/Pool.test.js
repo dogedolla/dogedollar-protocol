@@ -30,7 +30,7 @@ describe("Pool", function () {
       from: ownerAddress,
       gas: 8000000,
     });
-    this.usdc = await MockToken.new("USD//C", "USDC", 18, {
+    this.busd = await MockToken.new("USD//C", "BUSD", 18, {
       from: ownerAddress,
       gas: 8000000,
     });
@@ -38,7 +38,7 @@ describe("Pool", function () {
       from: ownerAddress,
       gas: 8000000,
     });
-    this.pool = await MockPool.new(this.usdc.address, { from: ownerAddress, gas: 8000000 });
+    this.pool = await MockPool.new(this.busd.address, { from: ownerAddress, gas: 8000000 });
     await this.pool.set(this.dao.address, this.dollar.address, this.univ2.address);
   });
 
@@ -975,8 +975,8 @@ describe("Pool", function () {
         const phantomAfterNewBonded = phantomAfterLessReward.add(new BN(10).mul(INITIAL_STAKE_MULTIPLE).addn(10));
 
         beforeEach(async function () {
-          await this.usdc.mint(userAddress, 1000);
-          await this.usdc.approve(this.pool.address, 1000, {
+          await this.busd.mint(userAddress, 1000);
+          await this.busd.approve(this.pool.address, 1000, {
             from: userAddress,
           });
 
@@ -1028,8 +1028,8 @@ describe("Pool", function () {
         const totalPhantom = phantomAfterNewBonded.add(new BN(1000).mul(INITIAL_STAKE_MULTIPLE).addn(1000));
 
         beforeEach(async function () {
-          await this.usdc.mint(userAddress, 3000);
-          await this.usdc.approve(this.pool.address, 3000, {
+          await this.busd.mint(userAddress, 3000);
+          await this.busd.approve(this.pool.address, 3000, {
             from: userAddress,
           });
 
@@ -1043,7 +1043,7 @@ describe("Pool", function () {
           await incrementEpoch(this.dao);
           await this.dollar.mint(this.pool.address, 1000);
 
-          // 1000 DOGEDOLA + 3000 USDC
+          // 1000 DOGEDOLA + 3000 BUSD
           await this.univ2.set(1000, 3000, 10);
 
           this.result = await this.pool.provide(1000, {
@@ -1124,8 +1124,8 @@ describe("Pool", function () {
 
     describe("when provide", function () {
       it("allows providing", async function () {
-        await this.usdc.mint(userAddress, 1000);
-        await this.usdc.approve(this.pool.address, 1000, {
+        await this.busd.mint(userAddress, 1000);
+        await this.busd.approve(this.pool.address, 1000, {
           from: userAddress,
         });
 
