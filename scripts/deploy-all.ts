@@ -75,8 +75,7 @@ async function main() {
 	await setTimeout(3000);
 
 	await proxyD1.implement(implementation.address);
-    // const yogeLpAddress = await pool.yodelp();
-    // const daoAddress = await pool.dao();
+
 
     console.log("Dollar: ", dollarAddress);
     console.log("Pool: ", pool.address);
