@@ -27,16 +27,16 @@ async function main() {
     await setTimeout(2000);
     const dollar = await Dollar.deploy();
 
-    await setTimeout(2000);
+    await setTimeout(4000);
 
 	const proxy = await Proxy.deploy(dollar.address);
 
-	await setTimeout(2000);
+	await setTimeout(4000);
 
 	const proxyD1 = await Dollar.attach(proxy.address);
     const usdt = "0xE3F5a90F9cb311505cd691a46596599aA1A0AD7D";
 
-	await setTimeout(2000);
+	await setTimeout(4000);
 
 	const dollarAddress = await proxyD1.dollar();
 
@@ -52,7 +52,9 @@ async function main() {
     const factory = await Pair.attach("0xAaA04462e35f3e40D798331657cA015169e005d7");
 
     console.log("Creating Pair...")
-    const pairAddress = await factory.createPair(usdt, dollarAddress);
+    await factory.createPair(usdt, dollarAddress);
+	await setTimeout(4000);
+	const pairAddress = await factory.getPair(usdt, dollarAddress);
 
 	await setTimeout(3000);
 	
@@ -66,14 +68,19 @@ async function main() {
 
     const pool = await Pool.deploy(dollar.address, proxy.address, pairAddress);
 
+	await setTimeout(3000);
+
     const implementation = await Implementation.deploy(dollarAddress, pool.address, oracle.address);
 
+	await setTimeout(3000);
+
+	await proxyD1.implement(implementation.address);
     // const yogeLpAddress = await pool.yodelp();
     // const daoAddress = await pool.dao();
 
     console.log("Dollar: ", dollarAddress);
     console.log("Pool: ", pool.address);
-    console.log("Oracle: ", oracle.Address);
+    console.log("Oracle: ", oracle.address);
     console.log("Implementation: ", implementation.address);
     console.log("DAO: ", proxy.address)
     console.log("LP Address: ", pairAddress);
