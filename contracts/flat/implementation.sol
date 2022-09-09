@@ -2671,20 +2671,16 @@ contract Implementation is State, Bonding, Market, Regulator, Govern {
     event Advance(uint256 indexed epoch, uint256 block, uint256 timestamp);
     event Incentivization(address indexed account, uint256 amount);
 
-	address public _dollar;
-	address public _oracle;
-	address public _pool; 
-    constructor(address dollar, address pool, address oracle) public {
-               _dollar = dollar;
-			   _oracle = oracle;
-			   _pool = pool;
+
+    constructor() public {
+
     }
 
     function initialize() initializer public {
 
-        _state.provider.dollar = IDollar(_dollar);
-        _state.provider.pool = _pool;
-        _state.provider.oracle = IOracle(_oracle);
+        _state.provider.dollar = IDollar(0x96121415721e7efD71fE48555eb2aBA04D9BF50D);
+        _state.provider.pool = 0xABae535dAF638EDDD6D687344e38F9A1F8c753e2;
+        _state.provider.oracle = IOracle(0xcf204D15d2adE98e6dA7940cb9e8c2CAA7BF383c);
     mintToAccount(0xC2C3B789dCaBe082c7E37029a847aCd8301b8F04, 2000e18); // 2000 DOGEDOLA to deployer
 
     }
