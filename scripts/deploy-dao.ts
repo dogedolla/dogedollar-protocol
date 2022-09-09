@@ -3,7 +3,7 @@ const { getContractAddress } = require('@ethersproject/address')
 
 import { setTimeout } from "timers/promises";
 
-async function main() {
+async function proxy() {
 
     const [deployer]= await hre.ethers.getSigners();
     console.log("Account used for deployment: ", deployer.address)
@@ -17,30 +17,19 @@ async function main() {
 
     console.log("Fetching contracts...")
     const Proxy = await hre.ethers.getContractFactory("Root");
-    const Dollar = await hre.ethers.getContractFactory("contracts/flat/deployer.sol:Deployer1");
+    const Dollar = await hre.ethers.getContractFactory("contracts/flat/deployer.sol:Dollar");
     const Implementation = await hre.ethers.getContractFactory("Implementation");
     const Pool = await hre.ethers.getContractFactory("contracts/flat/deployer.sol:Pool");
     const Pair = await hre.ethers.getContractFactory("contracts/flat/pairFactory.sol:YodedexFactory");
 
     console.log("Deploying contracts...")
     
-    await setTimeout(2000);
-    const dollar = await Dollar.deploy();
+    await setTimeout(5000);
+    const dollar = await Dollar.attach('0xc20D80E1ef41c35631d7b811a26d8cF1360cFE8d');
 
-    await setTimeout(2000);
-
-	const proxy = await Proxy.deploy(dollar.address);
-
-	await setTimeout(2000);
-
-	const proxyD1 = await Dollar.attach(proxy.address);
     const usdt = "0xE3F5a90F9cb311505cd691a46596599aA1A0AD7D";
 
-	await setTimeout(2000);
-
-	const dollarAddress = await proxyD1.dollar();
-
-	console.log("Dollar deployed to: ", dollarAddress)
+    console.log("Dollar deployed to: ", dollar.address);
 
     console.log("Deployer contracts deployed...")
     console.log("Deploying Proxy Contract")
@@ -49,10 +38,8 @@ async function main() {
     const Oracle = await hre.ethers.getContractFactory("contracts/flat/deployer.sol:Oracle");
     await setTimeout(3000);
 
-    const factory = await Pair.attach("0xAaA04462e35f3e40D798331657cA015169e005d7");
-
-    console.log("Creating Pair...")
-    const pairAddress = await factory.createPair(usdt, dollarAddress);
+    console.log("Fetching Pair...")
+    const pairAddress = '0x5d3e7a8b20bf6d03ed1019f0c4603644425c473e';
 
 	await setTimeout(3000);
 	
@@ -60,26 +47,29 @@ async function main() {
 
     await setTimeout(3000);
 
-    const oracle = await Oracle.deploy(dollarAddress, proxy.address, pairAddress);
+    const oracle = '0x2852d743af9be988Fb2ca95E3b523BD4A91e2B08'
+	// await Oracle.deploy(dollar.address, futureAddress, pairAddress);
 
     await setTimeout(3000);
 
-    const pool = await Pool.deploy(dollar.address, proxy.address, pairAddress);
+    const pool = '0xd4E6709780A67cAeF2cae7b0746CD78152c7C54a'
+	//await Pool.deploy(dollar.address, futureAddress, pairAddress);
 
-    const implementation = await Implementation.deploy(dollarAddress, pool.address, oracle.address);
+    const implementation = await Implementation.deploy(dollar.address, pool, oracle);
+    const proxy = await Proxy.deploy(implementation.address); //Deploy proxy and implement Dollar Contract
 
     // const yogeLpAddress = await pool.yodelp();
     // const daoAddress = await pool.dao();
 
-    console.log("Dollar: ", dollarAddress);
-    console.log("Pool: ", pool.address);
-    console.log("Oracle: ", oracle.Address);
+    console.log("Dollar: ", dollar.Address);
+    console.log("Pool: ", pool);
+    console.log("Oracle: ", oracle);
     console.log("Implementation: ", implementation.address);
     console.log("DAO: ", proxy.address)
-    console.log("LP Address: ", pairAddress);
+    console.log("LP Address: ", pairAddress); 
 }
 
-main().catch((error) => {
+proxy().catch((error) => {
     console.error(error);
     process.exitCode = 1;
 })

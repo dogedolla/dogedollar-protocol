@@ -1814,11 +1814,11 @@ pragma solidity ^0.5.17;
 
 contract Dollar is IDollar, MinterRole, ERC20Detailed, Permittable, ERC20Burnable  {
 
-    constructor(address _dao)
+    constructor()
     ERC20Detailed("Doge Dolla", "DOGEDOLA", 18)
     Permittable()
     public
-    {  _addMinter(address(_dao)); }
+    {  }
 
     function mint(address account, uint256 amount) public onlyMinter returns (bool) {
         _mint(account, amount);
@@ -3670,7 +3670,7 @@ pragma solidity ^0.5.17;
 
 contract Deployer1 is State, Permission, Upgradeable {
     function initialize() initializer public {
-        //_state.provider.dollar = new Dollar();
+        _state.provider.dollar = new Dollar();
     }
 
     function implement(address implementation) external {

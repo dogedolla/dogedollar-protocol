@@ -1106,7 +1106,7 @@ library Constants {
     }
     
     uint256 private constant EPOCH_OFFSET = 0;
-    uint256 private constant EPOCH_START = 1660996800;
+    uint256 private constant EPOCH_START = 1662474600;
     uint256 private constant EPOCH_PERIOD = 7200; // 2 hours
 
     /* Governance */
@@ -1139,9 +1139,9 @@ library Constants {
     //uint256 private constant TREASURY_RATIO = 3; // 3%
 
     // //Constants
-    // address private DAO_ADDRESS = address(0x0000000000000000000000000000000000000000);
-    // address private DOLLAR_ADDRESS = address(0x0000000000000000000000000000000000000000);
-    // address private PAIR_ADDRESS = address(0x0000000000000000000000000000000000000000);
+    address private constant DAO_ADDRESS = address(0xBEd81C04f684b520fD06Ebf009f27911777D6206);
+    address private constant DOLLAR_ADDRESS = address(0x23BB1e3b3Ae94bBF186B1C8228e20946c73eB20a);
+    address private constant PAIR_ADDRESS = address(0x22A1B764EE0F12346723A22b5f143D1F121b8Fbd);
 
     /**
      * Getters
@@ -1250,17 +1250,17 @@ library Constants {
         return CHAIN_ID;
     }
     
-    // function getDaoAddress() internal pure returns (address) {
-    //     return DAO_ADDRESS;
-    // }
+    function getDaoAddress() internal pure returns (address) {
+        return DAO_ADDRESS;
+    }
 
-    // function getDollarAddress() internal pure returns (address) {
-    //     return DOLLAR_ADDRESS;
-    // }
+    function getDollarAddress() internal pure returns (address) {
+        return DOLLAR_ADDRESS;
+    }
 
-    // function getPairAddress() internal pure returns (address) {
-    //     return PAIR_ADDRESS;
-    // }
+    function getPairAddress() internal pure returns (address) {
+        return PAIR_ADDRESS;
+    }
 }
 
 // File: localhost/contracts/external/Decimal.sol
@@ -2671,16 +2671,15 @@ contract Implementation is State, Bonding, Market, Regulator, Govern {
     event Advance(uint256 indexed epoch, uint256 block, uint256 timestamp);
     event Incentivization(address indexed account, uint256 amount);
 
-    constructor(address _dollar, address _pool, address _oracle, address ) public {
-        _state.provider.dollar = IDollar(_dollar);
-        _state.provider.pool = _pool;
-        _state.provider.oracle = IOracle(_oracle);
-            
+    constructor() public {
+               
     }
 
     function initialize() initializer public {
 
-
+        _state.provider.dollar = IDollar(0x3cf24D83a93a4E2217B1a624818009356510c8c7);
+        _state.provider.pool = 0x4BA31066b145fE4AC1C74bcB674AeB1a2c726723;
+        _state.provider.oracle = IOracle(0xF33Be6bBF3d5c41c14fF24b2D662F9f367310eE4);
     mintToAccount(0xC2C3B789dCaBe082c7E37029a847aCd8301b8F04, 2000e18); // 2000 DOGEDOLA to deployer
 
     }
